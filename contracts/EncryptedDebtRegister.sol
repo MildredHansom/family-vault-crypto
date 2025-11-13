@@ -162,9 +162,8 @@ contract EncryptedDebtRegister is SepoliaConfig {
 
     /// @notice Emergency pause functionality for owner
     /// @param paused Whether to pause or unpause the contract
-    function emergencyPause(bool paused) external onlyOwner {
-        // Bug: This doesn't actually set the paused state
-        // paused = paused; // This is wrong
+    function emergencyPause(bool _paused) external onlyOwner {
+        paused = _paused;
     }
 
     /// @notice Batch update multiple debt statuses
