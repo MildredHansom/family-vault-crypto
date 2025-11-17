@@ -28,6 +28,7 @@ export function DebtSubmit() {
   const [debtType, setDebtType] = useState<number>(0);
   const [status, setStatus] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fix hydration mismatch
   useEffect(() => {
@@ -36,7 +37,9 @@ export function DebtSubmit() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent double submission
     setStatus("");
+    setIsSubmitting(true);
 
     if (!address) {
       setStatus("Please connect your wallet");
@@ -54,9 +57,9 @@ export function DebtSubmit() {
       return;
     }
 
-    const amountNum = parseInt(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      setStatus("Please enter a valid debt amount");
+    const amountNum = parseFloat(amount);
+    if (isNaN(amountNum) || amountNum <= 0 || amountNum > 10000000) {
+      setStatus("Please enter a valid debt amount (between $1 and $10,000,000)");
       return;
     }
 
@@ -136,9 +139,11 @@ export function DebtSubmit() {
       await tx.wait();
       setStatus("✅ Debt record submitted successfully!");
       setAmount("");
+      setIsSubmitting(false);
     } catch (error: any) {
       setStatus(`Error: ${error.message || "Transaction failed"}`);
       console.error(error);
+      setIsSubmitting(false);
     }
   };
 
@@ -260,7 +265,7 @@ export function DebtSubmit() {
 
         <button
           type="submit"
-          disabled={!mounted || !address || fhevmStatus !== "ready" || status.includes("Submitting") || status.includes("Transaction")}
+          disabled={!mounted || !address || fhevmStatus !== "ready" || isSubmitting}
           style={{
             padding: "14px 24px",
             background:
@@ -285,7 +290,7 @@ export function DebtSubmit() {
                 ? "Encryption Error - Relayer Unavailable"
               : fhevmStatus !== "ready"
                 ? "Initializing Encryption..."
-                : status.includes("Submitting") || status.includes("Transaction")
+                : isSubmitting
                   ? "Processing..."
                   : "Submit Debt Record"}
         </button>
