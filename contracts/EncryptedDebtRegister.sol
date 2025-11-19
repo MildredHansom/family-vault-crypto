@@ -201,6 +201,69 @@ contract EncryptedDebtRegister is SepoliaConfig {
         uint256 activeDebts,
         uint256 totalTypes
     ) {
+        // Gas optimization: cache user debt IDs
+        uint256[] memory userDebtIds = userDebts[user];
+        totalDebts = userDebtIds.length;
+
+        uint8[4] memory typeTracker;
+
+        for (uint256 i = 0; i < totalDebts; i++) {
+            DebtRecord storage record = debts[userDebtIds[i]];
+            if (record.isActive) {
+                activeDebts++;
+            }
+            if (record.debtType < 4) {
+                typeTracker[record.debtType] = 1;
+            }
+        }
+
+        for (uint256 i = 0; i < 4; i++) {
+            if (typeTracker[i] == 1) {
+                totalTypes++;
+            }
+        }
+    }
+
+    /// @notice Get global debt statistics
+    /// @return totalDebts Total number of debts across all users
+    /// @return activeDebts Total number of active debts
+    /// @return totalUsers Number of unique users with debts
+    function getGlobalDebtStats() external view returns (
+        uint256 totalDebts,
+        uint256 activeDebts,
+        uint256 totalUsers
+    ) {
+        totalDebts = nextId - 1;
+        uint256 activeCount = 0;
+
+        // Count active debts (simplified - would need more complex logic for full accuracy)
+        // This is a gas-optimized approximation
+        for (uint256 i = 1; i <= totalDebts; i++) {
+            if (debts[i].isActive) {
+                activeCount++;
+            }
+        }
+
+        // Note: Counting unique users would require additional storage
+        // For now, return 0 as this would be expensive to compute
+        return (totalDebts, activeCount, 0);
+    }
+
+    /// @notice Emergency withdraw function for owner (in case of contract issues)
+    /// @param tokenAddress Address of token to withdraw (0x0 for ETH)
+    /// @param amount Amount to withdraw
+    function emergencyWithdraw(address tokenAddress, uint256 amount) external onlyOwner {
+        require(amount > 0, "Amount must be greater than 0");
+
+        if (tokenAddress == address(0)) {
+            // Withdraw ETH
+            payable(owner).transfer(amount);
+        } else {
+            // Withdraw ERC20 tokens (simplified - would need IERC20 interface)
+            // This is a placeholder for emergency situations
+            revert("ERC20 withdrawal not implemented - use direct token contract");
+        }
+    }
         uint256[] memory userDebtIds = userDebts[user];
         totalDebts = userDebtIds.length;
 
