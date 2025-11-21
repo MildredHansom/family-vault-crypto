@@ -15,13 +15,22 @@ export function DebtStatistics() {
   const [stats, setStats] = useState<Record<number, bigint>>({});
   const [totalCount, setTotalCount] = useState<bigint>(0n);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const loadStats = async () => {
     if (!CONTRACT_ADDRESS) {
+      setError("Contract not deployed. Please deploy the contract first.");
+      return;
+    }
+
+    if (typeof window === "undefined" || !(window as any).ethereum) {
+      setError("MetaMask or compatible wallet not detected.");
       return;
     }
 
     setLoading(true);
+    setError(null);
+
     try {
       const provider = new BrowserProvider((window as any).ethereum);
       const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI as any, provider);
@@ -31,12 +40,18 @@ export function DebtStatistics() {
 
       const typeStats: Record<number, bigint> = {};
       for (let i = 0; i <= 3; i++) {
-        const count = await contract.typeCounts(i);
-        typeStats[i] = count;
+        try {
+          const count = await contract.typeCounts(i);
+          typeStats[i] = count;
+        } catch (typeError) {
+          console.warn(`Error loading stats for type ${i}:`, typeError);
+          typeStats[i] = 0n;
+        }
       }
       setStats(typeStats);
     } catch (error: any) {
       console.error("Error loading statistics:", error);
+      setError(error.message || "Failed to load statistics. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -95,6 +110,21 @@ export function DebtStatistics() {
           {loading ? "Loading..." : "Refresh"}
         </button>
       </div>
+
+      {error && (
+        <div
+          style={{
+            padding: "12px 16px",
+            borderRadius: "8px",
+            background: "#fee2e2",
+            color: "#991b1b",
+            fontSize: "14px",
+            marginBottom: "24px",
+          }}
+        >
+          ⚠️ {error}
+        </div>
+      )}
 
       <div style={{ display: "grid", gap: "24px" }}>
         <div
