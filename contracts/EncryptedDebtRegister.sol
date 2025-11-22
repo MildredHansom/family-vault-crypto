@@ -60,6 +60,8 @@ contract EncryptedDebtRegister is SepoliaConfig {
     ) external returns (uint256 id) {
         require(debtType <= 3, "Invalid debt type");
         require(!paused, "Contract is paused");
+        require(inputProof.length > 0, "Input proof required");
+        require(msg.sender != address(0), "Invalid sender address");
 
         id = nextId++;
         
