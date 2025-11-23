@@ -14,6 +14,14 @@ This system allows users to:
 - Access emergency pause functionality for security
 - View comprehensive user debt summaries
 
+## 🎥 Demo Video
+
+Check out our demonstration video (`family.mp4`) to see the encrypted debt register in action! The video showcases:
+- Complete user workflow from debt submission to decryption
+- Privacy-preserving features using FHEVM
+- Real-time statistics and data management
+- Secure wallet integration
+
 ## Quick Start
 
 ### Prerequisites
