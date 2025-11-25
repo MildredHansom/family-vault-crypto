@@ -266,6 +266,18 @@ contract EncryptedDebtRegister is SepoliaConfig {
             revert("ERC20 withdrawal not implemented - use direct token contract");
         }
     }
+
+    /// @notice Get contract health status
+    /// @return isPaused Whether contract is paused
+    /// @return totalRecords Total number of debt records
+    /// @return contractOwner Owner address
+    function getContractHealth() external view returns (
+        bool isPaused,
+        uint256 totalRecords,
+        address contractOwner
+    ) {
+        return (paused, nextId - 1, owner);
+    }
         uint256[] memory userDebtIds = userDebts[user];
         totalDebts = userDebtIds.length;
 
