@@ -97,17 +97,23 @@ export function DebtStatistics() {
           disabled={loading}
           style={{
             padding: "10px 20px",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            background: loading
+              ? "#d1d5db"
+              : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             color: "white",
             border: "none",
             borderRadius: "8px",
             fontSize: "14px",
             fontWeight: "600",
             cursor: loading ? "not-allowed" : "pointer",
-            opacity: loading ? 0.6 : 1,
+            transition: "all 0.2s",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
-          {loading ? "Loading..." : "Refresh"}
+          {loading && <span style={{ fontSize: "16px" }}>⏳</span>}
+          {loading ? "Loading Statistics..." : "Refresh Statistics"}
         </button>
       </div>
 
