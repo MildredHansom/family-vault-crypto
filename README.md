@@ -192,5 +192,15 @@ chore: maintenance tasks
 
 ---
 
+## 🤝 Contributing
+
+We welcome contributions! Please see our contribution guidelines and ensure all commits follow conventional commit standards.
+
+## 📄 License
+
+This project is licensed under the BSD-3-Clause-Clear License - see the [LICENSE](LICENSE) file for details.
+
+---
+
 **Built with ❤️ using Zama FHEVM**
 
