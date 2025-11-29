@@ -24,7 +24,7 @@ This system allows users to:
 
 Check out our demonstration video to see the encrypted debt register in action!
 
-**Video Link**: [Watch Demo Video](https://github.com/MildredHansom/family-vault-crypto/raw/main/family.mp4)
+**Video Link**: [Watch Demo Video](https://github.com/MildredHansom/family-vault-crypto/blob/main/family.mp4)
 
 The video showcases:
 - Complete user workflow from debt submission to decryption
