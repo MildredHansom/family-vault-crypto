@@ -4,7 +4,7 @@ A privacy-preserving system for recording household debts (loans, credit cards, 
 
 ## 🌐 Live Demo
 
-**Frontend**: [https://family-green.vercel.app/](https://family-green.vercel.app/)
+**Frontend**: [https://family-vault-crypto.vercel.app/](https://family-vault-crypto.vercel.app/)
 
 **Testnet Contract**: [0xf7CcdcDf8bfdf79187832777fB2Eb77a8A3cC6C7](https://sepolia.etherscan.io/address/0xf7CcdcDf8bfdf79187832777fB2Eb77a8A3cC6C7) (Sepolia)
 
