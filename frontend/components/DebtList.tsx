@@ -395,8 +395,7 @@ export function DebtList() {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const paginatedDebts = filteredDebts.slice(startIndex, startIndex + itemsPerPage);
 
-            return paginatedDebts;
-            .map((debt) => {
+            return paginatedDebts.map((debt) => {
             const typeInfo = DEBT_TYPE_LABELS[debt.debtType] || {
               label: "Unknown",
               icon: "❓",
